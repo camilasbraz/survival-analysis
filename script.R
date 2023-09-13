@@ -30,7 +30,8 @@ base <- read.csv('turnover.csv', header = TRUE, sep = ',', na.strings = c('', NA
   mutate(gender = case_when(
     branch %in% c('fifth', 'first') ~ 'F',
     TRUE ~ 'M'  
-  ))
+  ))%>%
+  filter(exp <= 15)
 
 # dataset from https://www.aihr.com/blog/applying-survival-analysis-reduce-employee-turnover-practical-case/ 
 # exp – length of employment in the company
@@ -48,7 +49,7 @@ base <- read.csv('turnover.csv', header = TRUE, sep = ',', na.strings = c('', NA
 #         ano = substrLeft(Admissão, 4))
 
 
-base_completa_surv <- base_genero 
+base_completa_surv <- base 
 
 #Model
 Time <- as.numeric(base_completa_surv$exp)
@@ -72,16 +73,19 @@ survival_function <- ggsurvplot(model,conf.int = FALSE,
 
 
 survival_function$plot + 
- labs(x = "Tempo de empresa(Anos)",
+ labs(x = "Tempo de empresa (Meses)",
       y = "Fração que continua na empresa",color = "", fill = "") + 
  geom_segment(y = 0.5, yend = 0.5,x = 0, xend = median[1],linetype = "dashed", size = 1, color = cores2[1])+
  geom_segment(y = 0, yend = 0.5,x = median[1], xend = median[1],linetype = "dashed", size = 1, color = cores2[1])+
  geom_segment(y = 0.5, yend = 0.5,x = 0, xend = median[2],linetype = "dashed", size = 1, color = cores2[2])+
  geom_segment(y = 0, yend = 0.5,x = median[2], xend = median[2],linetype = "dashed", size = 1, color = cores2[2])+
- annotate("label",x = median[1], label = round(median[1],1), y = 0.02, color = cores2[1])+
- annotate("label",x = median[2], label = round(median[2],1), y = 0.02, color = cores2[2])+
+ annotate("label",x = median[1], label = round(median[1],1), y = 0.02, color = cores2[1], size = 6)+
+ annotate("label",x = median[2], label = round(median[2],1), y = 0.02, color = cores2[2], size = 6)+
+ scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+coord_cartesian(xlim = c(0,12))+
+ # scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
  theme(panel.grid = element_blank(),
-       axis.text = element_text(color = "#4d4d4d", size = 8),
+       axis.text = element_text(color = "#4d4d4d", size = 8, family = "Roboto"),
        axis.title = element_text(color = "#4d4d4d", size = 13, family = "Roboto"),
        #legend.position = "none"
  )
