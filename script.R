@@ -85,11 +85,7 @@ survival_function$plot +
 coord_cartesian(xlim = c(0,12))+
  # scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
  theme(panel.grid = element_blank(),
-       axis.text = element_text(color = "#4d4d4d", size = 8, family = "Roboto"),
+       axis.text = element_text(color = "#4d4d4d", size = 13, family = "Roboto"),
        axis.title = element_text(color = "#4d4d4d", size = 13, family = "Roboto"),
        #legend.position = "none"
  )
-
-
-
-
